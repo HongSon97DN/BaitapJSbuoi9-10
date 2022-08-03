@@ -10,8 +10,36 @@ function Validation() {
         return false;
     }
 
+    this.checkNumber = function(inputVal, spanID, message){
+        var number = /^[0-9]+$/;
+
+        if (inputVal.match(number)) {
+            document.getElementById(spanID).innerHTML = "";
+            document.getElementById(spanID).style.display = "none";
+            return true;
+        } else {
+             document.getElementById(spanID).innerHTML = message;
+            document.getElementById(spanID).style.display = "block";
+            return false;
+        }
+    }
+
+    this.checkIDLength = function(inputVal, spanID, message){
+        var min = 4;
+        var max = 6;
+
+        if (inputVal.length >= min && inputVal.length <= max) {
+            document.getElementById(spanID).innerHTML = "";
+            document.getElementById(spanID).style.display = "none";
+            return true;
+        } else {
+            document.getElementById(spanID).innerHTML = message;
+            document.getElementById(spanID).style.display = "block";
+            return false;
+        }
+    }
+
     this.checkID = function(inputVal, spanID, message, mangNV){
-        // var pattern = /^[0-9]{4,6}$/;
         // Giả sử mã id chưa tồn tại
         var isExist = false;
         isExist = mangNV.some(function(nv, index){
@@ -75,9 +103,9 @@ function Validation() {
     }
 
     this.checkDate = function(inputVal, spanID, message){
-        var pattern = /^(0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])[\/\-]\d{4}$/;
-
-        if(inputVal.macth(pattern)){
+        var pattern =  /^(0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])[\/\-]\d{4}$/;
+       
+        if(inputVal.match(pattern)){
             document.getElementById(spanID).innerHTML = "";
             document.getElementById(spanID).style.display = "none";
             return true;
@@ -88,16 +116,18 @@ function Validation() {
     }
     
     this.checkSalary = function(inputVal, spanID, message){
-        var pattern = /^[0-9].{1e+6-20e+6}+$/;
-        
-        if(inputVal.macth(pattern)){
+        var min = 1e+6;
+        var max = 20e+6;
+
+        if (inputVal >= min && inputVal <= max) {
             document.getElementById(spanID).innerHTML = "";
             document.getElementById(spanID).style.display = "none";
             return true;
+        } else {
+            document.getElementById(spanID).innerHTML = message;
+            document.getElementById(spanID).style.display = "block";
+            return false;
         }
-        document.getElementById(spanID).innerHTML = message;
-        document.getElementById(spanID).style.display = "block";
-        return false;
     }
 
     this.checkDropDown = function(selectID, spanID, message){
@@ -113,4 +143,21 @@ function Validation() {
         document.getElementById(spanID).style.display = "block";
         return false;
     }
+    
+    this.checkTime = function(inputVal, spanID, message){
+        var min = 80;
+        var max = 200;
+
+        if (inputVal >= min && inputVal <= max) {
+            document.getElementById(spanID).innerHTML = "";
+            document.getElementById(spanID).style.display = "none";
+            return true;
+        } else {
+            document.getElementById(spanID).innerHTML = message;
+            document.getElementById(spanID).style.display = "block";
+            return false;
+        }
+    }
 }
+
+  

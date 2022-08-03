@@ -31,5 +31,21 @@ function DanhSachNhanVien() {
             dsnv.mangNV[viTri] = nv;
         }
     }
+    
+}
+
+DanhSachNhanVien.prototype.timKiem = function(tuKhoa){
+    var mangTK = [];
+    var tuKhoaThuong = tuKhoa.toLowerCase();
+    
+    this.mangNV.map(function(nv){
+        var viTriTK = nv.xepLoai.toLowerCase().indexOf(tuKhoa.toLowerCase());
+
+        if (viTriTK > -1) {
+            mangTK.push(nv);
+        }
+        
+    })
+    return mangTK;
    
 }

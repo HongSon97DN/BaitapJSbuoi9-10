@@ -37,7 +37,7 @@ function themNhanVien() {
 
     var isValid = true;
     // TKNV(id) => (kiểm tra rỗng, ko được trùng và từ 4 - 6 ký số)
-    isValid &= validation.checkEmpty(id, "tbTKNV", "Tài khoản nhân viên không được để trống") && validation.checkID(id, "tbTKNV", "Tài khoản nhân viên không được trùng và ít nhất từ 4 - 6 ký số", dsnv.mangNV);
+    isValid &= validation.checkEmpty(id, "tbTKNV", "Tài khoản nhân viên không được để trống") && validation.checkNumber(id, "tbTKNV", "TKNV phải là số") && validation.checkIDLength(id, "tbTKNV", "Tài khoản ít nhất từ 4 - 6 ký số") && validation.checkID(id, "tbTKNV", "Tài khoản nhân viên không được trùng", dsnv.mangNV);
 
     // Tên NV (kiểm tra rỗng, kiểm tra ký tự chữ)
     isValid &= validation.checkEmpty(name, "tbTen", "Tên nhân viên không được để trống") && validation.checkName(name, "tbTen", "Tên nhân viên không hợp lệ");
@@ -49,13 +49,16 @@ function themNhanVien() {
     isValid &= validation.checkEmpty(pass, "tbMatKhau", "Mật khẩu không được để trống") && validation.checkPass(pass, "tbMatKhau", "Mật khẩu từ 6 - 10 ký tự có ít nhất 1 kí tự in hoa, 1 ký số, 1 ký tự đặc biệt");
 
     // Date (kiểm tra rỗng, kiểm tra format)
-    isValid &= validation.checkEmpty(ngayCong, "tbNgay", "Ngày làm không được để trống") && validation.checkDate(ngayCong, "tbNgay", "Ngày làm phải đúng định dạng dd/mm/yyyy");
+    isValid &= validation.checkEmpty(ngayCong, "tbNgay", "Ngày làm không được để trống") && validation.checkDate(ngayCong, "tbNgay", "Ngày làm phải đúng định dạng mm/dd/yyyy");
 
     // Salary(kiểm tra rỗng, từ 1e+6 - 20e+6)
-    isValid &= validation.checkEmpty(luongCB, "tbLuongCB", "Lương không được để trống") && validation.checkSalary(luongCB, "tbLuongCB", "Lương phải từ 1.000.000 - 20.000.000");
+    isValid &= validation.checkEmpty(luongCB, "tbLuongCB", "Lương không được để trống") && validation.checkNumber(luongCB, "tbLuongCB", "Lương nhân viên phải là số") && validation.checkSalary(luongCB, "tbLuongCB", "Lương NV từ 1.000.000 - 20.000.000");
 
     // Chức vụ (người dùng có lựa chọn nào khác cái đầu tiên ko)
     isValid &= validation.checkDropDown("chucvu", "tbChucVu", "Chức vụ chưa được chọn");
+
+    // Giờ làm(kiểm tra rỗng, từ 80 - 200)
+    isValid &= validation.checkEmpty(time, "tbGiolam", "Lương không được để trống") && validation.checkNumber(time, "tbGiolam", "Giờ làm nhân viên phải là số") && validation.checkTime(time, "tbGiolam", "Giờ làm NV từ 80 - 200");
 
     if (isValid) {
         var nv = new NhanVien(id,name,email,pass,ngayCong,luongCB,chucVu,time);
@@ -140,13 +143,50 @@ function capNhatNhanVien() {
     var chucVu = getELE("chucvu").value;
     var time = getELE("gioLam").value;
 
-    var nv = new NhanVien(id,name,email,pass,ngayCong,luongCB,chucVu,time);
+    var isValid = true;
+    // TKNV(id) => (kiểm tra rỗng, ko được trùng và từ 4 - 6 ký số)
+    isValid &= validation.checkEmpty(id, "tbTKNV", "Tài khoản nhân viên không được để trống") && validation.checkNumber(id, "tbTKNV", "TKNV phải là số") && validation.checkIDLength(id, "tbTKNV", "Tài khoản ít nhất từ 4 - 6 ký số") && validation.checkID(id, "tbTKNV", "Tài khoản nhân viên không được trùng", dsnv.mangNV);
 
-    nv.tongLuong();
-    nv.xepLoai();
+    // Tên NV (kiểm tra rỗng, kiểm tra ký tự chữ)
+    isValid &= validation.checkEmpty(name, "tbTen", "Tên nhân viên không được để trống") && validation.checkName(name, "tbTen", "Tên nhân viên không hợp lệ");
 
-    dsnv.capNhatNV(nv);
-    hienThiDS(dsnv.mangNV);
-    setLocalStorage();
-    resetForm();
+    // Email (kiểm tra rỗng, kiểm tra định dạng format)
+    isValid &= validation.checkEmpty(email, "tbEmail", "Email không được để trống") && validation.checkEmail(email, "tbEmail", "Email chưa đúng định dạng");
+
+    // Password (kiểm tra rỗng, có 6 - 10 ký tự,có 1 ký số, có 1 ký tự in hoa, 1 ký tự đặc biệt)
+    isValid &= validation.checkEmpty(pass, "tbMatKhau", "Mật khẩu không được để trống") && validation.checkPass(pass, "tbMatKhau", "Mật khẩu từ 6 - 10 ký tự có ít nhất 1 kí tự in hoa, 1 ký số, 1 ký tự đặc biệt");
+
+    // Date (kiểm tra rỗng, kiểm tra format)
+    isValid &= validation.checkEmpty(ngayCong, "tbNgay", "Ngày làm không được để trống") && validation.checkDate(ngayCong, "tbNgay", "Ngày làm phải đúng định dạng mm/dd/yyyy");
+
+    // Salary(kiểm tra rỗng, từ 1e+6 - 20e+6)
+    isValid &= validation.checkEmpty(luongCB, "tbLuongCB", "Lương không được để trống") && validation.checkNumber(luongCB, "tbLuongCB", "Lương nhân viên phải là số") && validation.checkSalary(luongCB, "tbLuongCB", "Lương NV từ 1.000.000 - 20.000.000");
+
+    // Chức vụ (người dùng có lựa chọn nào khác cái đầu tiên ko)
+    isValid &= validation.checkDropDown("chucvu", "tbChucVu", "Chức vụ chưa được chọn");
+
+    // Giờ làm(kiểm tra rỗng, từ 80 - 200)
+    isValid &= validation.checkEmpty(time, "tbGiolam", "Lương không được để trống") && validation.checkNumber(time, "tbGiolam", "Giờ làm nhân viên phải là số") && validation.checkTime(time, "tbGiolam", "Giờ làm NV từ 80 - 200");
+    if (isValid) {
+        var nv = new NhanVien(id,name,email,pass,ngayCong,luongCB,chucVu,time);
+
+        nv.tongLuong();
+        nv.xepLoai();
+
+        dsnv.capNhatNV(nv);
+        hienThiDS(dsnv.mangNV);
+        setLocalStorage();
+        resetForm();
+    }
+    
 }
+
+function timKiemTheoLoai(){
+    var tuKhoa = getELE("searchName").value;
+
+    var mangTK = dsnv.timKiem(tuKhoa.trim());
+    
+    hienThiDS(mangTK);
+}
+getELE("searchName").onkeyup = timKiemTheoLoai;
+getELE("btnTimNV").onclick = timKiemTheoLoai;
